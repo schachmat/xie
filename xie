@@ -1,0 +1,9 @@
+#! /bin/sh
+
+_all_results="$(eix -# $1)"
+
+if [ "$(echo "$_all_results" | wc -l)" -eq "1" ]; then
+	eix -e "$_all_results"
+else
+	eix -e "$(echo -n "$_all_results" | dmenu -i -l 10)"
+fi
