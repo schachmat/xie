@@ -1,4 +1,5 @@
 #! /bin/sh
+# for licensing information see file LICENSE
 
 _all_results="$(eix -# $1)"
 
