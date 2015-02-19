@@ -2,8 +2,18 @@
 
 _all_results="$(eix -# $1)"
 
-if [ "$(echo "$_all_results" | wc -l)" -eq "1" ]; then
-	eix -e "$_all_results"
+# get weighted history
+_hist="$(sort /home/m/.xie_history | uniq -c | sort -nr | awk '{print $2}' | grep -F $1)"
+_all_wo_hist="$((echo "$_all_results"; echo "$_hist"; echo "$_hist") | sort | uniq -u)"
+_all="$(echo "$_hist"; echo "$_all_wo_hist")"
+
+if [ "$(echo "$_all" | wc -l)" -eq "1" ]; then
+	_result="$_all"
 else
-	eix -e "$(echo -n "$_all_results" | dmenu -i -l 10)"
+	_result="$(echo -n "$_all" | dmenu -i -l 10)"
+	if [ "$?" -ne "0" ]; then
+		exit 1;
+	fi
 fi
+
+eix -e "$_result" && echo "$_result" >> ~/.xie_history
