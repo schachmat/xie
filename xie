@@ -6,7 +6,7 @@ _all_results="$(eix -# $1)"
 # get weighted history
 _hist="$(sort ~/.xie_history | uniq -c | sort -nr | awk '{print $2}' | grep -F $1)"
 _all_wo_hist="$((echo "$_all_results"; echo "$_hist"; echo "$_hist") | sort | uniq -u)"
-_all="$(echo "$_hist"; echo "$_all_wo_hist")"
+_all="$((echo "$_hist"; echo "$_all_wo_hist") | sed '/^$/d')"
 
 if [ "$(echo "$_all" | wc -l)" -eq "1" ]; then
 	_result="$_all"
