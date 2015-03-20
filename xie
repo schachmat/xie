@@ -1,10 +1,21 @@
 #! /bin/sh
 # for licensing information see file LICENSE
 
-_all_results="$(eix -# $1)"
+category=""
+if [ "$#" -eq "1" ]; then
+	package="$1"
+elif [ "$#" -eq "2" ]; then
+	package="$1"
+	category="$2"
+else
+	echo -e "Usage:\nxie PACKAGE [CATEGORY]"
+	exit 1
+fi
+
+_all_results="$(eix -# "$package" -C "$category")"
 
 # get weighted history
-_hist="$(sort ~/.xie_history | uniq -c | sort -nr | awk '{print $2}' | grep -F $1)"
+_hist="$(sort ~/.xie_history | uniq -c | sort -nr | awk '{print $2}' | grep -F $package)"
 _all_wo_hist="$((echo "$_all_results"; echo "$_hist"; echo "$_hist") | sort | uniq -u)"
 _all="$((echo "$_hist"; echo "$_all_wo_hist") | sed '/^$/d')"
 
