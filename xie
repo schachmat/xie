@@ -28,4 +28,4 @@ else
 	fi
 fi
 
-eix -e "$_result" && echo "$_result" >> ~/.xie_history
+eix -v -e "$_result" && echo "$_result" >> ~/.xie_history
